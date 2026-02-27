@@ -69,6 +69,9 @@
           <view-switcher v-if="!isMobile" />
           <theme-switcher />
           <a href="https://github.com/L3376679936/lab-ai" target="_blank" class="github-link" v-if="!isMobile"><i class="el-icon-link"></i> GitHub</a>
+          <el-button type="text" style="margin-left: 15px; color: #f56c6c;" @click="handleLogout" v-if="!isMobile">
+            <i class="el-icon-switch-button"></i> 退出
+          </el-button>
         </div>
       </el-header>
       
@@ -444,6 +447,17 @@ export default {
           behavior: 'smooth'
         })
       }
+    },
+    handleLogout() {
+      this.$confirm('确定要退出登录吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        localStorage.removeItem('lab_token')
+        this.$message.success('已退出登录')
+        this.$router.push('/login')
+      }).catch(() => {})
     }
   }
 }

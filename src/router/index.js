@@ -6,6 +6,12 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/Login.vue'),
+    meta: { title: '登录' }
+  },
+  {
     path: '/',
     component: Layout,
     redirect: '/components/introduction',
@@ -144,6 +150,28 @@ const router = new VueRouter({
       }
     }
     return { x: 0, y: 0 }
+  }
+})
+
+// 添加全局前置路由守卫
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = `${to.meta.title} - Lab AI`
+  }
+  
+  const token = localStorage.getItem('lab_token')
+  if (to.path === '/login') {
+    if (token) {
+      next('/') // 已登录，去首页
+    } else {
+      next() // 未登录，正常进登录页
+    }
+  } else {
+    if (token) {
+      next() // 已登录，正常访问
+    } else {
+      next('/login') // 未登录，强行跳转登录页
+    }
   }
 })
 
