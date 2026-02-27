@@ -29,7 +29,11 @@
                <!-- Floating Stats Center -->
                <div class="floating-stat">
                  <span class="label">SYSTEM STATUS</span>
-                 <span class="value">ONLINE</span>
+                 <span class="value">
+                   <span class="online-text">ONLINE</span>
+                   <span class="cursor"></span>
+                 </span>
+                 <span class="status-ring"></span>
                </div>
                
                <!-- Orbiting Dots -->
@@ -420,22 +424,94 @@ export default {
       .floating-stat {
         text-align: center;
         z-index: 2;
-        animation: pulse 3s ease-in-out infinite;
+        position: relative;
         
         .label {
           display: block;
           font-size: 10px;
           color: var(--text-secondary);
-          letter-spacing: 2px;
-          margin-bottom: 4px;
+          letter-spacing: 3px;
+          margin-bottom: 8px;
+          animation: label-fade 3s ease-in-out infinite;
         }
         .value {
-          font-size: 32px;
+          font-size: 28px;
           font-weight: 700;
-          background: var(--primary-gradient);
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
+          filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.8));
+          
+          .online-text {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            letter-spacing: 4px;
+            animation: text-glow-sweep 2.5s ease-in-out infinite;
+            
+            /* 扫光覆盖层 */
+            &::after {
+              content: 'ONLINE';
+              position: absolute;
+              top: 0;
+              left: -100%;
+              width: 40%;
+              height: 100%;
+              background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+              -webkit-background-clip: text;
+              background-clip: text;
+              animation: sweep-shine 2.5s ease-in-out infinite;
+            }
+          }
+          
+          /* 错误：-webkit-text-fill-color 不能用 content overlay。改用一个透明 div 做扫光 */
+          .sweep-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+            animation: sweep-move 2.5s ease-in-out infinite;
+          }
+          
+          /* 光标颗烁 */
+          .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 28px;
+            background: var(--primary-color);
+            box-shadow: 0 0 6px var(--primary-color);
+            animation: cursor-blink 1.2s step-start infinite;
+            border-radius: 1px;
+          }
+        }
+        
+        /* 呼吸光晒 */
+        .status-ring {
+          display: block;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          border: 2px solid rgba(59, 130, 246, 0.3);
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          animation: ring-breathe 2s ease-in-out infinite;
+          pointer-events: none;
+          
+          &::before {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid rgba(59, 130, 246, 0.15);
+            animation: ring-breathe 2s ease-in-out infinite 0.5s;
+            transform: scale(1.4);
+          }
         }
       }
       
@@ -524,32 +600,38 @@ export default {
   50% { transform: translateY(-10px); }
 }
 
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+/* ONLINE 区域动画 */
+@keyframes label-fade {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
 }
 
-@keyframes spin-reverse {
-  from { transform: rotate(360deg); }
-  to { transform: rotate(0deg); }
+@keyframes text-glow-sweep {
+  0%, 100% { filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.6)); }
+  50% { filter: drop-shadow(0 0 14px rgba(59, 130, 246, 1)) drop-shadow(0 0 30px rgba(6, 182, 212, 0.6)); }
 }
 
-@keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(0.95); opacity: 0.8; }
+@keyframes sweep-move {
+  0% { transform: translateX(-100%); opacity: 0; }
+  20% { opacity: 1; }
+  60% { opacity: 1; }
+  100% { transform: translateX(200%); opacity: 0; }
 }
 
-@keyframes scan {
-  0% { top: 0%; opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { top: 100%; opacity: 0; }
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
-@keyframes float-card {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-
-</style>
+@keyframes ring-breathe {
+  0%, 100% { 
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.4;
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+  }
+  50% { 
+    transform: translate(-50%, -50%) scale(1.15);
+    opacity: 0.8;
+    box-shadow: 0 0 20px 4px rgba(59, 130, 246, 0.2);
+  }
+}</style>
