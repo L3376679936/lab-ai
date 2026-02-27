@@ -68,7 +68,7 @@
           <!-- 移动端隐藏部分功能按钮，避免拥挤 -->
           <view-switcher v-if="!isMobile" />
           <theme-switcher />
-          <a href="#" class="github-link" v-if="!isMobile"><i class="el-icon-link"></i> GitHub</a>
+          <a href="https://github.com/L3376679936/lab-ai" target="_blank" class="github-link" v-if="!isMobile"><i class="el-icon-link"></i> GitHub</a>
         </div>
       </el-header>
       
