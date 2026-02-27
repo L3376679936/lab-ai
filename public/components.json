@@ -1,0 +1,225 @@
+{
+    "components": [
+        {
+            "name": "LabTable",
+            "description": "增强型表格组件，支持密度控制、拖拽排序和科技主题。",
+            "dependencies": [
+                "element-ui",
+                "sortablejs"
+            ],
+            "size": "15KB",
+            "category": "Data"
+        },
+        {
+            "name": "LabForm",
+            "description": "动态表单生成器，基于 JSON 配置自动渲染表单。",
+            "dependencies": [
+                "element-ui"
+            ],
+            "size": "12KB",
+            "category": "Form"
+        },
+        {
+            "name": "LabChart",
+            "description": "ECharts 图表封装，自动适配当前主题。",
+            "dependencies": [
+                "echarts",
+                "resize-observer-polyfill"
+            ],
+            "size": "8KB",
+            "category": "Data"
+        },
+        {
+            "name": "LabUpload",
+            "description": "增强文件上传组件，支持文件列表自定义和拖拽。",
+            "dependencies": [
+                "element-ui"
+            ],
+            "size": "5KB",
+            "category": "Form"
+        },
+        {
+            "name": "LabTablePage",
+            "description": "综合页面组件，集成搜索、工具栏、表格 and 分页，支持拖拽排序。",
+            "dependencies": [
+                "element-ui",
+                "sortablejs",
+                "element-resize-detector"
+            ],
+            "size": "25KB",
+            "category": "Complex"
+        },
+        {
+            "name": "LabTableTransfer",
+            "description": "高级表格穿梭框，融合了穿梭框的交互与表格的展示能力。",
+            "dependencies": [
+                "element-ui"
+            ],
+            "size": "18KB",
+            "category": "Form"
+        },
+        {
+            "name": "LabQRCode",
+            "description": "二维码生成组件，封装 qrcode 库，支持动态内容与样式配置。",
+            "dependencies": [
+                "qrcode"
+            ],
+            "size": "3KB",
+            "category": "Data"
+        },
+        {
+            "name": "LabSliceFrame",
+            "description": "科技感九宫格缩放外框，解决背景图片在不同比例下变形的问题。",
+            "dependencies": [
+                "element-ui"
+            ],
+            "size": "5KB",
+            "category": "Other"
+        },
+        {
+            "name": "LabRichText",
+            "description": "基于 Tinymce 的富文本编辑器，支持丰富的插件扩展与自定义工具栏。",
+            "dependencies": [
+                "tinymce",
+                "@tinymce/tinymce-vue"
+            ],
+            "size": "15KB",
+            "category": "Form"
+        },
+        {
+            "name": "LabVideo",
+            "description": "基于 video.js 的封装组件，提供统一的视频播放体验，并集成科技风 HUD 装饰外框。",
+            "dependencies": [
+                "video.js",
+                "vue-video-player"
+            ],
+            "size": "8KB",
+            "category": "Media"
+        },
+        {
+            "name": "LabFuzzySelect",
+            "description": "基于 Element UI Select 封装，支持拼音首字母模糊匹配。",
+            "dependencies": [
+                "element-ui",
+                "pinyin-match"
+            ],
+            "category": "Form",
+            "size": "5KB"
+        },
+        {
+            "name": "LabInputNew",
+            "description": "下拉框底部嵌入新增按钮，支持快捷添加选项。",
+            "dependencies": [
+                "element-ui"
+            ],
+            "category": "Form",
+            "size": "4KB"
+        },
+        {
+            "name": "LabIpInput",
+            "description": "分段式 IP 输入框，自动校验 0-255 范围与输入跳转。",
+            "dependencies": [],
+            "category": "Form",
+            "size": "6KB"
+        },
+        {
+            "name": "LabTextRoll",
+            "description": "无缝文字滚动组件，支持水平/垂直方向与悬停暂停，无外部依赖。",
+            "dependencies": [],
+            "category": "DataDisplay",
+            "size": "4KB"
+        },
+        {
+            "name": "LabExcelRead",
+            "description": "表格读取组件，支持 Excel/CSV 上传并解析为 JSON 数据。",
+            "dependencies": [
+                "xlsx"
+            ],
+            "category": "Form",
+            "size": "3KB"
+        },
+        {
+            "name": "v-copy",
+            "description": "一键复制指令，支持 Clipboard API 且兼容性好。",
+            "dependencies": [],
+            "category": "Directive",
+            "size": "1KB",
+            "type": "directive",
+            "key": "copy"
+        },
+        {
+            "name": "v-debounce",
+            "description": "防抖指令，防止按钮短时间内重复点击。",
+            "dependencies": [],
+            "category": "Directive",
+            "size": "1KB",
+            "type": "directive",
+            "key": "debounce"
+        },
+        {
+            "name": "v-throttle",
+            "description": "节流指令，限制事件高频触发频率。",
+            "dependencies": [],
+            "category": "Directive",
+            "size": "1KB",
+            "type": "directive",
+            "key": "throttle"
+        },
+        {
+            "name": "v-waterMarker",
+            "description": "水印背景指令，支持自定义文字和透明度。",
+            "dependencies": [],
+            "category": "Directive",
+            "size": "1KB",
+            "type": "directive",
+            "key": "waterMarker"
+        },
+        {
+            "name": "v-clickoutside",
+            "description": "点击元素外部触发回调指令。",
+            "dependencies": [],
+            "category": "Directive",
+            "size": "2KB",
+            "type": "directive",
+            "key": "clickOutside"
+        },
+        {
+            "name": "v-ellipsis",
+            "description": "文本省略指令，超出指定行数显示省略号。",
+            "dependencies": [],
+            "category": "Directive",
+            "size": "1KB",
+            "type": "directive",
+            "key": "ellipsis"
+        },
+        {
+            "name": "v-waves",
+            "description": "水波纹点击效果指令。",
+            "dependencies": [],
+            "category": "Directive",
+            "size": "1KB",
+            "type": "directive",
+            "key": "waves"
+        },
+        {
+            "name": "v-progressive-img",
+            "description": "渐进式图片加载指令，提供细腻的加载体验。",
+            "dependencies": [],
+            "category": "Directive",
+            "size": "1KB",
+            "type": "directive",
+            "key": "progressiveImg"
+        },
+        {
+            "name": "v-hotkey",
+            "description": "键盘热键绑定指令，支持组合键触发。",
+            "dependencies": [
+                "v-hotkey"
+            ],
+            "category": "Directive",
+            "size": "1.5KB",
+            "type": "directive",
+            "key": "hotkey"
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+@mixin theme-normal {
+  --primary-color: #3b82f6; // Modern Blue
+  --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  --bg-color: #f0f2f5;
+  --card-bg: #ffffff;
+  --text-color: #1f2937;
+  --text-secondary: #6b7280;
+  --border-color: #e5e7eb;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --glass-bg: rgba(255, 255, 255, 0.9);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.5);
+  --sidebar-bg: #ffffff;
+  --header-bg: rgba(255, 255, 255, 0.8);
+}
+
+@mixin theme-tech {
+  --primary-color: #00f3ff; // Neon Cyan
+  --primary-gradient: linear-gradient(135deg, #00f3ff 0%, #0066ff 100%);
+  --bg-color: #050510; // Deep Space Black
+  --card-bg: rgba(18, 25, 40, 0.7);
+  --text-color: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --border-color: rgba(0, 243, 255, 0.15);
+  --shadow: 0 0 20px rgba(0, 243, 255, 0.1);
+  --glass-bg: rgba(10, 15, 30, 0.6);
+  --glass-border: 1px solid rgba(0, 243, 255, 0.1);
+  --sidebar-bg: rgba(5, 5, 16, 0.85);
+  --header-bg: rgba(5, 5, 16, 0.6);
+}

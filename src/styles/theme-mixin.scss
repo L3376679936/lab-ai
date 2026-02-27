@@ -1,0 +1,28 @@
+@mixin theme-normal {
+  --primary-color: #409EFF;
+  --bg-color: #f5f7fa;
+  --card-bg: #ffffff;
+  --text-color: #303133;
+  --border-color: #ebeef5;
+  --shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+@mixin theme-tech {
+  --primary-color: #00d9ff;
+  --bg-color: #000000;
+  --card-bg: rgba(15, 15, 25, 0.9);
+  --text-color: #ffffff;
+  --border-color: rgba(0, 243, 255, 0.3);
+  --shadow: 0 0 25px rgba(0, 243, 255, 0.25);
+}
+
+// 供全局使用的变量定义，会在 main.js 或 App.vue 中根据 body class 注入 css 变量
+// 或者直接在这里定义类名对应的变量
+
+.theme-normal {
+  @include theme-normal;
+}
+
+.theme-tech {
+  @include theme-tech;
+}

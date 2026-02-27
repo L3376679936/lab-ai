@@ -1,0 +1,553 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import "./mixins.scss";
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+// Global Scrollbar Styling
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.5);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.8);
+}
+
+
+.theme-normal {
+  @include theme-normal;
+}
+
+.theme-tech {
+  @include theme-tech;
+  
+  // Element UI Overrides
+  color: var(--text-color);
+  background: var(--bg-color);
+
+  // Cards
+  .el-card {
+    background: var(--card-bg);
+    border: var(--glass-border);
+    color: var(--text-color);
+    
+    .el-card__header {
+      border-bottom: var(--glass-border);
+    }
+  }
+
+  // Menus
+  .el-menu {
+    background-color: transparent;
+    border-right: none;
+    
+    .el-menu-item, .el-submenu__title {
+      color: var(--text-color);
+      
+      &:hover, &:focus {
+        background-color: rgba(0, 243, 255, 0.1);
+        color: var(--primary-color);
+      }
+      
+      i { color: inherit; }
+    }
+
+    .el-menu-item.is-active {
+      color: var(--primary-color);
+      background-color: rgba(0, 243, 255, 0.15);
+    }
+  }
+
+  // Tables
+  .el-table {
+    background-color: transparent;
+    color: var(--text-color);
+    
+    th, tr {
+      background-color: transparent;
+    }
+    
+    td, th.is-leaf {
+      border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+    }
+    
+    --el-table-border-color: rgba(0, 243, 255, 0.1);
+    
+    .el-table__body tr:hover > td {
+      background-color: rgba(0, 243, 255, 0.1) !important;
+    }
+
+    &::before {
+      background-color: rgba(0, 243, 255, 0.1);
+    }
+  }
+
+  // Dialogs
+  .el-dialog {
+    background: #050505; // Almost pure black for depth
+    border: 1px solid rgba(0, 243, 255, 0.4);
+    box-shadow: 0 0 40px rgba(0, 243, 255, 0.2);
+    
+    .el-dialog__title {
+      color: var(--primary-color);
+      text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+    }
+    
+    .el-dialog__body {
+      color: var(--text-color);
+    }
+  }
+
+  // Handle scrollbar for tech theme separately if needed
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 217, 255, 0.3) !important;
+    &:hover { background: rgba(0, 217, 255, 0.5) !important; }
+  }
+
+  // Inputs
+  .el-input__inner, .el-textarea__inner {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 243, 255, 0.2);
+    color: var(--primary-color);
+    
+    &:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+    }
+  }
+
+  // Buttons System Refinement
+  .el-button {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    
+    // Default / Basic
+    &--default {
+      border-color: rgba(0, 243, 255, 0.3);
+      color: var(--primary-color);
+      &:hover, &:focus {
+        background: rgba(0, 243, 255, 0.1);
+        border-color: var(--primary-color);
+        box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+        color: var(--primary-color);
+      }
+    }
+
+    // Primary (Cyan Glow)
+    &--primary {
+      background: rgba(0, 217, 255, 0.15);
+      border-color: #00d9ff;
+      color: #00d9ff;
+      
+      &:hover, &:focus {
+        background: rgba(0, 217, 255, 0.3);
+        border-color: #00f3ff;
+        box-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+        color: #fff;
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+      }
+      &.is-plain { background: transparent; }
+    }
+
+    // Success (Emerald Green)
+    &--success {
+      background: rgba(103, 194, 58, 0.15);
+      border-color: #67c23a;
+      color: #67c23a;
+      
+      &:hover, &:focus {
+        background: rgba(103, 194, 58, 0.3);
+        border-color: #00ff9d;
+        box-shadow: 0 0 20px rgba(103, 194, 58, 0.5);
+        color: #fff;
+      }
+    }
+
+    // Warning (Amber Gold)
+    &--warning {
+      background: rgba(230, 162, 60, 0.15);
+      border-color: #e6a23c;
+      color: #e6a23c;
+      
+      &:hover, &:focus {
+        background: rgba(230, 162, 60, 0.3);
+        border-color: #ffb300;
+        box-shadow: 0 0 20px rgba(230, 162, 60, 0.5);
+        color: #fff;
+      }
+    }
+
+    // Danger (Neon Red)
+    &--danger {
+      background: rgba(245, 108, 108, 0.15);
+      border-color: #f56c6c;
+      color: #f56c6c;
+      
+      &:hover, &:focus {
+        background: rgba(245, 108, 108, 0.3);
+        border-color: #ff4d4f;
+        box-shadow: 0 0 20px rgba(245, 108, 108, 0.5);
+        color: #fff;
+      }
+    }
+
+    // Info (Cyber Gray)
+    &--info {
+      background: rgba(144, 147, 153, 0.15);
+      border-color: #909399;
+      color: #909399;
+      
+      &:hover, &:focus {
+        background: rgba(144, 147, 153, 0.3);
+        border-color: #a5d6ff;
+        box-shadow: 0 0 20px rgba(144, 147, 153, 0.5);
+        color: #fff;
+      }
+    }
+
+    // Active state for all tech buttons
+    &:active {
+      transform: scale(0.95);
+      filter: brightness(1.2);
+    }
+
+    // Disabled state
+    &.is-disabled {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border-color: rgba(255, 255, 255, 0.1) !important;
+      color: rgba(255, 255, 255, 0.3) !important;
+      box-shadow: none !important;
+      cursor: not-allowed;
+    }
+  }
+
+  // Checkboxes
+  .el-checkbox {
+    color: var(--text-color);
+    
+    .el-checkbox__inner {
+      background-color: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(0, 243, 255, 0.4);
+      transition: all 0.3s;
+      
+      &::after {
+        border-color: var(--primary-color);
+        border-width: 2px;
+      }
+    }
+
+    .el-checkbox__input.is-checked {
+      .el-checkbox__inner {
+        background-color: rgba(0, 243, 255, 0.2);
+        border-color: var(--primary-color);
+        box-shadow: 0 0 8px rgba(0, 243, 255, 0.4);
+      }
+      + .el-checkbox__label {
+        color: var(--primary-color);
+        text-shadow: 0 0 8px rgba(0, 243, 255, 0.3);
+      }
+    }
+
+    .el-checkbox__input.is-focus .el-checkbox__inner {
+      border-color: var(--primary-color);
+    }
+  }
+
+  // Tables Border Fix
+  .el-table--border, .el-table--group {
+    border: 1px solid rgba(0, 243, 255, 0.2) !important;
+  }
+  
+  .el-table--border td, 
+  .el-table--border th,
+  .el-table td, 
+  .el-table th.is-leaf {
+    border-right: 1px solid rgba(0, 243, 255, 0.1);
+    border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+  }
+
+  .el-table::after, .el-table::before {
+    background-color: rgba(0, 243, 255, 0.2);
+  }
+
+  // Global PrismJS Style Neutralization for Tech Content
+  pre[class*="language-"],
+  code[class*="language-"] {
+    &, & * {
+      text-shadow: none !important;
+      color: #ffffff !important; // 强制基础文字纯白
+      -webkit-font-smoothing: antialiased;
+    }
+  }
+
+  .token {
+    text-shadow: none !important;
+  }
+
+
+
+  // Alerts
+  .el-alert {
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+    
+    &.el-alert--success {
+      background-color: rgba(103, 194, 58, 0.15);
+      border-color: rgba(103, 194, 58, 0.3);
+      .el-alert__title, .el-alert__description { color: #67c23a; }
+      .el-alert__icon { color: #67c23a; }
+    }
+    
+    &.el-alert--info {
+      background-color: rgba(144, 147, 153, 0.15);
+      border-color: rgba(144, 147, 153, 0.3);
+      .el-alert__title, .el-alert__description { color: #a6a9ad; }
+      .el-alert__icon { color: #a6a9ad; }
+    }
+    
+    &.el-alert--warning {
+      background-color: rgba(230, 162, 60, 0.15);
+      border-color: rgba(230, 162, 60, 0.3);
+      .el-alert__title, .el-alert__description { color: #e6a23c; }
+      .el-alert__icon { color: #e6a23c; }
+    }
+    
+    &.el-alert--error {
+      background-color: rgba(245, 108, 108, 0.15);
+      border-color: rgba(245, 108, 108, 0.3);
+      .el-alert__title, .el-alert__description { color: #f56c6c; }
+      .el-alert__icon { color: #f56c6c; }
+    }
+
+    .el-alert__closebtn {
+      color: var(--text-secondary);
+      &:hover { color: var(--text-color); }
+    }
+  }
+
+  // Backtop Advanced Tech Refinement
+  .el-backtop {
+    background: transparent !important;
+    box-shadow: none !important;
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 4px !important;
+    overflow: visible !important;
+
+    .lab-backtop-tech {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background-color: rgba(6, 18, 30, 0.85);
+      border: 1px solid rgba(0, 243, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-color);
+      backdrop-filter: blur(8px);
+      transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+      clip-path: polygon(15% 0, 100% 0, 100% 85%, 85% 100%, 0 100%, 0 15%);
+
+      i { font-size: 24px; position: relative; z-index: 2; transition: transform 0.3s; }
+
+      .corner-top, .corner-bottom {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border: 2px solid var(--primary-color);
+        pointer-events: none;
+        opacity: 0.6;
+      }
+      .corner-top { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+      .corner-bottom { bottom: -2px; right: -2px; border-left: none; border-top: none; }
+
+      .scan-line {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+        box-shadow: 0 0 10px var(--primary-color);
+        opacity: 0;
+        z-index: 1;
+      }
+
+      &:hover {
+        background-color: rgba(0, 243, 255, 0.15);
+        border-color: var(--primary-color);
+        box-shadow: inset 0 0 15px rgba(0, 243, 255, 0.4);
+        transform: translateY(-5px);
+        
+        i { transform: translateY(-3px); color: #fff; text-shadow: 0 0 10px var(--primary-color); }
+        .scan-line { animation: backtop-scan 1.5s linear infinite; opacity: 1; }
+        .corner-top, .corner-bottom { opacity: 1; }
+      }
+    }
+  }
+
+  @keyframes backtop-scan {
+    0% { top: 0; opacity: 0; }
+    50% { opacity: 0.8; }
+    100% { top: 100%; opacity: 0; }
+  }
+}
+// Documentation Styles
+.lab-table-page-doc, .lab-table-doc, [class*="-doc"] {
+  h3 {
+    margin: 40px 0 20px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-color);
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background: linear-gradient(90deg, 
+      rgba(59, 130, 246, 0.12) 0%, 
+      rgba(59, 130, 246, 0.04) 50%, 
+      transparent 100%
+    );
+    border-radius: 4px;
+    overflow: hidden;
+    border-left: 4px solid #3b82f6;
+    
+    // 粒子背景特效 (密集异步分布，增强普通模式可见性)
+    &::before {
+      display: block;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      // 显著增加 alpha 值 (0.2 -> 0.45+) 以在白背景上显现
+      background-image: 
+        radial-gradient(circle at center, rgba(59, 130, 246, 0.45) 1px, transparent 1.5px),
+        radial-gradient(circle at center, rgba(59, 130, 246, 0.35) 1.5px, transparent 2px),
+        radial-gradient(circle at center, rgba(59, 130, 246, 0.25) 1.2px, transparent 1.8px),
+        radial-gradient(circle at center, rgba(59, 130, 246, 0.2) 0.8px, transparent 1.2px),
+        radial-gradient(circle at center, rgba(59, 130, 246, 0.3) 2px, transparent 3px);
+      
+      background-size: 47px 59px, 83px 113px, 137px 79px, 191px 167px, 233px 131px;
+      background-position: 0 0, 15px 30px, 45px 10px, 80px 50px, 120px 25px;
+      opacity: 0.9; // 提高基础不透明度
+      pointer-events: none;
+      animation: particles-flow-irregular 50s linear infinite;
+    }
+
+    // 扫描光效动效 (增强普通模式可见性)
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(59, 130, 246, 0.45), // 使用带透明度的品牌蓝，而非白色
+        transparent
+      );
+      animation: title-scan 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+  }
+
+  @keyframes particles-flow-irregular {
+    from { background-position: 0 0, 15px 30px, 45px 10px, 80px 50px, 120px 25px; }
+    to { background-position: 600px 400px, -400px 700px, 800px -300px, -500px -500px, 300px 800px; }
+  }
+
+  @keyframes title-scan {
+    0% { left: -100%; }
+    35%, 100% { left: 100%; }
+  }
+
+  .api-table {
+    margin-bottom: 20px;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .table-tip {
+    margin: 0 0 30px;
+    padding: 12px 20px;
+    background: rgba(59, 130, 246, 0.04);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    border: 1px dashed rgba(59, 130, 246, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    i { color: #3b82f6; font-size: 16px; }
+    a {
+      color: #06b6d4;
+      text-decoration: none;
+      font-weight: 600;
+      &:hover { text-decoration: underline; }
+    }
+  }
+}
+
+.theme-tech {
+  [class*="-doc"] {
+    h3 {
+      color: #fff;
+      background: linear-gradient(90deg, 
+        rgba(0, 243, 255, 0.15) 0%, 
+        rgba(0, 243, 255, 0.05) 50%, 
+        transparent 100%
+      );
+      border-left: 4px solid #00f3ff;
+      text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+      
+      &::before { 
+        display: block;
+        background-image: 
+          radial-gradient(circle at center, rgba(0, 243, 255, 0.4) 1px, transparent 1.5px),
+          radial-gradient(circle at center, rgba(0, 243, 255, 0.3) 1.5px, transparent 2px),
+          radial-gradient(circle at center, rgba(0, 243, 255, 0.2) 1.2px, transparent 1.8px),
+          radial-gradient(circle at center, rgba(0, 243, 255, 0.15) 0.8px, transparent 1.2px),
+          radial-gradient(circle at center, rgba(0, 243, 255, 0.25) 2px, transparent 3px);
+        opacity: 0.8;
+      }
+      
+      &::after {
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(0, 243, 255, 0.4),
+          transparent
+        );
+      }
+    }
+    .table-tip {
+      background: rgba(6, 182, 212, 0.08);
+      border: 1px solid rgba(6, 182, 212, 0.2);
+      color: #94a3b8;
+      i { color: #00f3ff; }
+    }
+  }
+}
