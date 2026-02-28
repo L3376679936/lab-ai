@@ -52,6 +52,12 @@
           <i class="el-icon-arrow-down"></i>
         </div>
       </transition>
+
+      <!-- 移动端专属退出登录按钮（固定在侧边栏底部） -->
+      <div v-if="isMobile" class="mobile-logout-btn" @click="handleLogout">
+        <i class="el-icon-switch-button"></i>
+        <span>退出登录</span>
+      </div>
     </el-aside>
     
     <el-container>
@@ -309,6 +315,10 @@ export default {
       this.isMenuVisible = true
     } else {
       this.isMenuVisible = false
+      // 移动端强制使用文档（路由）模式，不继承桌面端的滚动模式设置
+      if (this.$store.state.viewMode !== 'router') {
+        this.$store.commit('setViewMode', 'router')
+      }
     }
 
       if (this.viewMode === 'scroll') {
@@ -480,7 +490,7 @@ export default {
   display: flex;
   flex-direction: column;
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  z-index: 10;
+  z-index: 1000; /* 必须高于 .drawer-bg (999)，避免蒙版覆盖菜单 */
   overflow: hidden; // Important for hiding content
   position: relative; // For positioning scroll indicator
   width: 260px !important; // Standard width
@@ -663,6 +673,27 @@ export default {
         filter: blur(6px);
         width: 60px;
       }
+    }
+  }
+
+  // 移动端退出登录按钮（侧边栏底部）
+  .mobile-logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 24px;
+    color: #f56c6c;
+    font-size: 14px;
+    cursor: pointer;
+    border-top: var(--glass-border);
+    transition: background 0.2s;
+    flex-shrink: 0;
+    white-space: nowrap;
+
+    i { font-size: 16px; }
+
+    &:hover {
+      background: rgba(245, 108, 108, 0.08);
     }
   }
 }
