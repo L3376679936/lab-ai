@@ -1,5 +1,5 @@
 <template>
-  <div class="login-container" :class="theme === 'tech' ? 'theme-tech' : 'theme-light'">
+  <div class="login-container" :class="[theme === 'tech' ? 'theme-tech' : 'theme-light', { 'is-unlocking': isUnlocking }]">
     <!-- 背景粒子连线（仅暗色/科技模式显示） -->
     <canvas id="particle-canvas" class="particle-canvas" v-show="theme === 'tech'"></canvas>
     
@@ -12,12 +12,6 @@
       <div class="shape shape-1"></div>
       <div class="shape shape-2"></div>
       <div class="shape shape-3"></div>
-    </div>
-
-    <!-- 科技感开门动效图层（position:fixed，不受父容器 overflow:hidden 影响） -->
-    <div class="tech-3d-scene" v-if="theme === 'tech'">
-      <div class="tech-door door-left" :class="{entering: isDoorIn}"></div>
-      <div class="tech-door door-right" :class="{entering: isDoorIn}"></div>
     </div>
 
     <!-- 登录面板 -->
@@ -79,7 +73,6 @@ export default {
   data() {
     return {
       isUnlocking: false,
-      isDoorIn: false,  // 门滑入关闭
       loading: false,
       loginForm: {
         username: 'lab_admin',
@@ -103,6 +96,9 @@ export default {
     }
   },
   mounted() {
+    // 隐藏可能残留的门
+    this.$store.commit('SET_DOOR_VISIBLE', false)
+    
     this.$nextTick(() => {
       if (this.theme === 'tech') {
         this.initParticles()
@@ -140,17 +136,31 @@ export default {
             if (username === 'lab_admin' && encryptedPassword === '5a500fe2612df1258a08952f9d88ade6') {
               this.$message.success('登录成功')
               localStorage.setItem('lab_token', 'mock_token_' + new Date().getTime())
+              // 1. 登录成功，登录框开始缩小淡出
+              this.isUnlocking = true
               
-              if (this.theme === 'tech') {
-                // 登录框淡出
-                this.isUnlocking = true
-                // 0.3s 后门从两侧滑入
-                setTimeout(() => { this.isDoorIn = true }, 300)
-                // 1.5s 后跳转
-                setTimeout(() => { this.$router.push('/') }, 1500)
-              } else {
-                this.$router.push('/')
-              }
+              // 等待登录卡片彻底消失 (0.4s)
+              setTimeout(() => {
+                // 2. 门渐入显示 (0.2s)
+                this.$store.commit('SET_DOOR_OPEN', false)
+                this.$store.commit('SET_DOOR_VISIBLE', true)
+                
+                // 等待门完全出现
+                setTimeout(() => {
+                  // 3. 门遮挡住后，路由静默跳转到首页
+                  this.$router.push('/')
+                  
+                  // 4. 给新页面一點渲染时间后，大门向两侧推开 (0.6s)
+                  setTimeout(() => {
+                    this.$store.commit('SET_DOOR_OPEN', true)
+                    
+                    // 5. 大门完全推开后，销毁大门图层
+                    setTimeout(() => {
+                      this.$store.commit('SET_DOOR_VISIBLE', false)
+                    }, 600)
+                  }, 100)
+                }, 200)
+              }, 400)
             } else {
               this.$message.error('账号或密码错误')
             }
@@ -380,7 +390,8 @@ class Particle {
   }
 
   .login-box-wrapper {
-    z-index: 10;
+    position: relative;
+    z-index: 9999;
     animation: fade-up 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
   }
 
@@ -478,6 +489,10 @@ class Particle {
   ::v-deep .el-button {
     font-family: inherit;
   }
+}
+
+/* =========== 登录全局动画 (应用于 login-container) =========== */
+.login-container {
   
   // 登录成功后登录框淡出缩放
   &.is-unlocking {
@@ -485,67 +500,9 @@ class Particle {
       animation: fade-out-zoom 0.4s forwards;
       pointer-events: none;
     }
-    .particle-canvas {
+    .particle-canvas, .light-bg-shapes {
       opacity: 0;
       transition: opacity 0.3s;
-    }
-  }
-
-  /* ===== 科技阯门 3D 独立图层 (fixed 不受 overflow:hidden 影响) ===== */
-  /* 科技开门动效图层 */
-  .tech-3d-scene {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 9000;
-  }
-
-  .tech-door {
-    position: absolute;
-    top: 0;
-    width: 50vw;
-    height: 100vh;
-    background: linear-gradient(to right, #010c1e 80%, #031a35);
-    pointer-events: none;
-    will-change: transform;
-
-    /* 门缝发光边缘 */
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      width: 3px;
-      height: 100vh;
-      background: linear-gradient(to bottom, transparent, #00d9ff 20%, #00d9ff 80%, transparent);
-      box-shadow: 0 0 20px #00d9ff, 0 0 40px rgba(0, 217, 255, 0.4);
-      opacity: 0;
-      transition: opacity 0.2s ease-in;
-    }
-    &.entering::after { opacity: 1; }
-  }
-
-  /* 左门：默认藏在左侧屏外 */
-  .door-left {
-    left: 0;
-    transform: translateX(-100%);
-    &::after { right: -1px; }
-    &.entering {
-      transform: translateX(0);
-      transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-  }
-
-  /* 右门：默认藏在右侧屏外 */
-  .door-right {
-    right: 0;
-    transform: translateX(100%);
-    &::after { left: -1px; }
-    &.entering {
-      transform: translateX(0);
-      transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
     }
   }
 
@@ -568,9 +525,12 @@ class Particle {
     height: 100%;
     z-index: 0;
   }
+}
 
+.theme-tech {
   .login-box-wrapper {
-    z-index: 10;
+    position: relative;
+    z-index: 9999;
     perspective: 1000px;
   }
 
@@ -787,5 +747,32 @@ class Particle {
 @keyframes fade-out-zoom {
   0% { transform: scale(1); opacity: 1; }
   100% { transform: scale(1.15); opacity: 0; }
+}
+
+/* =========== 移动端适配 =========== */
+@media screen and (max-width: 768px) {
+  .theme-light .login-box-wrapper,
+  .theme-tech .login-box-wrapper {
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+  }
+
+  .theme-light .login-box,
+  .theme-tech .login-box {
+    width: 100%;
+    padding: 30px 25px;
+  }
+
+  .theme-light .login-header .title,
+  .theme-tech .login-header .title {
+    font-size: 22px;
+  }
+
+  .theme-tech .login-header .tech-icon {
+    font-size: 42px;
+  }
 }
 </style>

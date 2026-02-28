@@ -2,6 +2,14 @@
   <div id="app" :class="themeClass">
     <div class="theme-transition-mask" :class="{ active: isSwitching }"></div>
     <router-view/>
+    
+    <!-- 跨路由全局科技门动效图层 -->
+    <transition name="fade-door">
+      <div class="tech-3d-scene" v-show="$store.state.isDoorVisible">
+        <div class="tech-door door-left" :class="{'is-open': $store.state.isDoorOpen}"></div>
+        <div class="tech-door door-right" :class="{'is-open': $store.state.isDoorOpen}"></div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -105,4 +113,83 @@ body {
     clip-path: circle(150% at 50% 50%);
   }
 }
+
+/* 门整体图层的渐隐渐显 */
+.fade-door-enter-active {
+  transition: opacity 0.2s ease-out;
+}
+.fade-door-leave-active {
+  transition: opacity 0.3s ease-in;
+}
+.fade-door-enter, .fade-door-leave-to {
+  opacity: 0;
+}
+
+/* ================= 全局开门/关门动效 ================= */
+.tech-3d-scene {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9000;
+}
+
+.tech-door {
+  position: absolute;
+  top: 0;
+  width: 50vw;
+  height: 100vh;
+  background: linear-gradient(to right, #010c1e 80%, #031a35);
+  pointer-events: none;
+  will-change: transform;
+
+  /* 门缝发光边缘 */
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 3px;
+    height: 100vh;
+    background: linear-gradient(to bottom, transparent, #00d9ff 20%, #00d9ff 80%, transparent);
+    box-shadow: 0 0 20px #00d9ff, 0 0 40px rgba(0, 217, 255, 0.4);
+    opacity: 0;
+    transition: opacity 0.2s ease-in;
+  }
+  &:not(.is-open)::after { opacity: 1; }
+}
+
+/* 亮色主题下门的适配样式 */
+#app.theme-normal .tech-door, #app.theme-light .tech-door {
+  background: linear-gradient(to right, #f5f7fa 80%, #e4e7ed);
+  
+  &::after {
+    background: linear-gradient(to bottom, transparent, #409eff 20%, #409eff 80%, transparent);
+    box-shadow: 0 0 20px #409eff, 0 0 40px rgba(64, 158, 255, 0.4);
+  }
+}
+
+/* 左门：停在屏幕中间（关着） */
+.door-left {
+  left: 0;
+  transform: translateX(0);
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  &::after { right: -1px; }
+  &.is-open {
+    transform: translateX(-100%);
+  }
+}
+
+/* 右门：停在屏幕中间（关着） */
+.door-right {
+  right: 0;
+  transform: translateX(0);
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  &::after { left: -1px; }
+  &.is-open {
+    transform: translateX(100%);
+  }
+}
+
 </style>

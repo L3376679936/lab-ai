@@ -1,7 +1,7 @@
 <template>
   <div class="theme-switcher">
     <!-- 移动端：图标模式，两个图标分别点击切换 -->
-    <template v-if="isMobile">
+    <template >
       <span
         class="theme-icon-btn"
         :class="{ active: !isTech }"
@@ -24,7 +24,7 @@
     </template>
 
     <!-- 桌面端：带文字 Switch -->
-    <template v-else>
+    <!-- <template v-else>
       <el-switch
         v-model="isTech"
         active-text="暗色主题"
@@ -33,7 +33,7 @@
         inactive-color="#409EFF"
         @change="handleThemeChange"
       />
-    </template>
+    </template> -->
   </div>
 </template>
 

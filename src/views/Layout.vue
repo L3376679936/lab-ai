@@ -75,8 +75,8 @@
           <view-switcher v-if="!isMobile" />
           <theme-switcher />
           <a href="https://github.com/L3376679936/lab-ai" target="_blank" class="github-link" v-if="!isMobile"><i class="el-icon-link"></i> GitHub</a>
-          <el-button type="text" style="margin-left: 15px; color: #f56c6c;" @click="handleLogout" v-if="!isMobile">
-            <i class="el-icon-switch-button"></i> 退出
+          <el-button type="text" style="color: #f56c6c;" @click="handleLogout" class="header-logout-btn">
+            <i class="el-icon-switch-button"></i> <span v-if="!isMobile">退出</span>
           </el-button>
         </div>
       </el-header>
@@ -313,12 +313,6 @@ export default {
     
     if (!this.isMobile) {
       this.isMenuVisible = true
-    } else {
-      this.isMenuVisible = false
-      // 移动端强制使用文档（路由）模式，不继承桌面端的滚动模式设置
-      if (this.$store.state.viewMode !== 'router') {
-        this.$store.commit('setViewMode', 'router')
-      }
     }
 
       if (this.viewMode === 'scroll') {
@@ -466,7 +460,26 @@ export default {
       }).then(() => {
         localStorage.removeItem('lab_token')
         this.$message.success('已退出登录')
-        this.$router.push('/login')
+        
+        // 执行关门前，先让敞开的门快速渐入显示
+        this.$store.commit('SET_DOOR_OPEN', true)
+        this.$store.commit('SET_DOOR_VISIBLE', true) // 0.2s fade-enter
+        
+        // 等门刚浮现就立刻向中间合拢 (0.6s)
+        setTimeout(() => {
+          this.$store.commit('SET_DOOR_OPEN', false)
+          
+          // 等待大门完全合拢
+          setTimeout(() => {
+            // 在紧闭的大门后静默跳转回登录页
+            this.$router.push('/login')
+            
+            // 给登录页渲染留一线时间，然后大门渐退消失 (0.3s fade-leave)
+            setTimeout(() => {
+              this.$store.commit('SET_DOOR_VISIBLE', false)
+            }, 100)
+          }, 600)
+        }, 150)
       }).catch(() => {})
     }
   }
@@ -777,6 +790,19 @@ export default {
       
       &:hover {
         color: var(--primary-color);
+      }
+    }
+    
+    .header-logout-btn {
+      padding: 0;
+      margin-left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      
+      i {
+        font-size: 18px; /* 跟主题切换图标大小保持一致 */
       }
     }
   }
