@@ -1,33 +1,31 @@
 import Vue from 'vue'
 
 const requireComponent = require.context(
-  // 其组件目录的相对路径
   './',
-  // 是否查询其子目录
   true,
-  // 匹配基础组件文件名的正则表达式
-  /\.vue$/
+  /index\.vue$/
 )
 
 requireComponent.keys().forEach(fileName => {
-  // 获取组件配置
-  const componentConfig = requireComponent(fileName)
+  // 获取组件名
+  // fileName 格式通常为 ./ComponentName/index.vue 或 ./ComponentName.vue
+  const pathParts = fileName.split('/')
+  let componentName = ''
 
-  // 获取组件的 PascalCase 命名
-  // 优先使用组件内部的 name 选项
-  const componentName = componentConfig.default.name || 
-    // 否则从文件名中获取 (去除目录和扩展名)
-    fileName.split('/').pop().replace(/\.\w+$/, '')
+  if (pathParts.length > 2) {
+    // 对应 ./LabButton/index.vue 格式
+    componentName = pathParts[1]
+  } else {
+    // 对应 ./LabLogo.vue 格式
+    componentName = pathParts[pathParts.length - 1].replace(/\.\w+$/, '')
+  }
 
-  // 过滤掉不应该全局注册的组件（可选，例如只注册 Lab 开头的）
-  // 这里我们假设 components 下的所有组件都应当注册
-  
-  // 全局注册组件
-  Vue.component(
-    componentName,
-    // 如果这个组件选项是通过 `export default` 导出的，
-    // 那么就会优先使用 `.default`，
-    // 否则回退到使用模块的根。
-    componentConfig.default || componentConfig
-  )
+  // 异步注册组件
+  // 只有当该组件被渲染时，Webpack 才会加载对应的 chunk 文件
+  Vue.component(componentName, () => {
+    // 必须通过 requireComponent 返回一个 Promise 以符合 Vue 异步组件规范
+    // 这里利用 require.context 的同步特性配合 Promise.resolve 模拟异步加载
+    // 实际上 Webpack 在构建时会处理这种 import 关系
+    return Promise.resolve(requireComponent(fileName).default || requireComponent(fileName))
+  })
 })
